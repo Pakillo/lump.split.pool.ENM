@@ -7,7 +7,7 @@ Authors@R:
            role = c("aut", "cre"),
            email = "f.rodriguez.sanc@gmail.com")
 Description: What the package does (one paragraph).
-License: What license it uses
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 URL: https://github.com/Pakillo/lump.split.pool.ENM
