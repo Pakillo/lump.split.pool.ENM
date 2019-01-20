@@ -1,5 +1,5 @@
 Package: lump.split.pool.ENM
-Title: What the Package Does (One Line, Title Case)
+Title: Comparing different ENM approaches
 Version: 0.0.0.9000
 Authors@R: 
     person(given = "Francisco",
