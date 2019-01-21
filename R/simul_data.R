@@ -9,10 +9,20 @@
 #' @return A dataframe
 #' @export
 #'
-#' @seealso http://www.cookbook-r.com/Numbers/Saving_the_state_of_the_random_number_generator/
 
 
-simul_data <- function(nspp, nsite, seed) {
+simul_data <- function(nspp, nsite) {
+
+
+  ## random seed
+  if (is.null(.GlobalEnv$.Random.seed))
+    stop("Please set seed before.\n")
+  else
+    seed <- .GlobalEnv$.Random.seed
+  # see http://www.cookbook-r.com/Numbers/Saving_the_state_of_the_random_number_generator/
+
+
+
 
   # simulate a phylogenetic tree
   phy <- ape::rtree(n = nspp)
@@ -51,10 +61,23 @@ simul_data <- function(nspp, nsite, seed) {
   pres <- rbinom(length(suitab.error), size = 1, prob = suitab.error.invlogit)
 
 
-  dat <- data.frame(taxa = paste("t", sort(rep(1:nspp, nsite)), sep = ""),
-                    site = rep(1:nsite, nspp),
-                    env = rep(env, nspp),
-                    suitab.invlogit = suitab.invlogit,
-                    presabs = pres)
+  data2model <- data.frame(taxon = paste("t", sort(rep(1:nspp, nsite)), sep = ""),
+                           site = rep(1:nsite, nspp),
+                           env = rep(env, nspp),
+                           suitab.invlogit = suitab.invlogit,
+                           presabs = pres)
+
+  simdf <- data.frame(run.id = Sys.time(),
+                      nspp = nspp,
+                      nsite = nsite,
+                      taxon = paste("t", 1:nspp, sep = ""),
+                      interc = intercept,
+                      slope = slope
+                      )
+
+  simdata <- list(data2model = data2model,
+                  simdf = simdf,
+                  phylog = phy,
+                  seed = seed)
 
 }
