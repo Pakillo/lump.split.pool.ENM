@@ -15,10 +15,11 @@ simul_data <- function(nspp, nsite) {
 
 
   ## random seed
-  if (is.null(.GlobalEnv$.Random.seed))
+  if (is.null(.GlobalEnv$.Random.seed)) {
     stop("Please set seed before.\n")
-  else
+  } else {
     seed <- .GlobalEnv$.Random.seed
+  }
   # see http://www.cookbook-r.com/Numbers/Saving_the_state_of_the_random_number_generator/
 
 
@@ -36,7 +37,7 @@ simul_data <- function(nspp, nsite) {
   iD <- t(chol(Vphy.std))
 
   # Generate environmental site variable
-  env <- seq(0, 20, length.out = nsite)
+  env <- seq(-10, 10, length.out = nsite)  # mean(env) = 0
 
 
 
