@@ -10,10 +10,10 @@
 #' @import ggplot2
 #'
 
-plot_niches <- function(df, suitab.column) {
+plot_niches <- function(df = simdata$data2model, suitab.column = "suitab.invlogit") {
 
-  plot.niches <- ggplot(df, aes(x = env, colour = taxa)) +
-    + aes_string(suitab.column) +
+  plot.niches <- ggplot(df) +
+    aes_string(x = "env", y = suitab.column, colour = "taxon") +
     ylim(0, 1) +
     labs(x = "Temperature", y = "Suitability") +
     geom_line(size = 2) +
