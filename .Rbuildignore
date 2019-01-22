@@ -1,3 +1,6 @@
 ^LICENSE\.md$
 ^lump\.split\.pool\.Rproj$
 ^\.Rproj\.user$
+bayesmix.rds
+pglmm.rds
+

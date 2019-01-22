@@ -12,3 +12,15 @@ Encoding: UTF-8
 LazyData: true
 URL: https://github.com/Pakillo/lump.split.pool.ENM
 BugReports: https://github.com/Pakillo/lump.split.pool.ENM/issues
+Imports: 
+    ape,
+    gtools,
+    arm,
+    ggplot2,
+    viridis,
+    dplyr,
+    broom,
+    lme4,
+    brms,
+    MCMCglmm
+RoxygenNote: 6.1.1
