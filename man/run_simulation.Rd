@@ -7,7 +7,7 @@
 run_simulation(nspp, nsite, delta = 0.95)
 }
 \arguments{
-\item{delta}{adapt_delta parameter for brm}
+\item{delta}{'adapt_delta' parameter for brm}
 }
 \value{
 A data.frame

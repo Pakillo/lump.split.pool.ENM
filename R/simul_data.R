@@ -62,7 +62,7 @@ simul_data <- function(nspp, nsite) {
   pres <- rbinom(length(suitab.error), size = 1, prob = suitab.error.invlogit)
 
 
-  data2model <- data.frame(taxon = paste("t", sort(rep(1:nspp, nsite)), sep = ""),
+  data2model <- data.frame(taxon = as.character(paste("t", sort(rep(1:nspp, nsite)), sep = "")),
                            site = rep(1:nsite, nspp),
                            env = rep(env, nspp),
                            suitab.invlogit = suitab.invlogit,
@@ -71,7 +71,7 @@ simul_data <- function(nspp, nsite) {
   simdf <- data.frame(run.id = Sys.time(),
                       nspp = nspp,
                       nsite = nsite,
-                      taxon = paste("t", 1:nspp, sep = ""),
+                      taxon = as.character(paste("t", 1:nspp, sep = "")),
                       interc = intercept,
                       slope = slope
                       )

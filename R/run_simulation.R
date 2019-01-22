@@ -1,6 +1,6 @@
 #' Run simulation
 #'
-#' @param delta adapt_delta parameter for brm
+#' @param delta 'adapt_delta' parameter for brm
 #' @inheritParams fit_split
 #'
 #' @return A data.frame
