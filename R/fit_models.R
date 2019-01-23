@@ -143,14 +143,18 @@ fit_pglmm <- function(simdata, delta = 0.95) {
   rownames(A) <- rownames(inv.phylo$Ainv)
 
   df <- simdata$data2model
+  df$phylo <- df$taxon
 
 
   if (!file.exists("pglmm.rds")) {
+
     pglmm <- brm(
-      presabs ~ env + (1 + env | taxon),
+      #presabs ~ env + (1 + env | taxon),
+      presabs ~ env + (1 + env | taxon) + (1 + env | phylo),
       data = df,
       family = bernoulli(),
-      cov_ranef = list(taxon = A),
+      #cov_ranef = list(taxon = A),
+      cov_ranef = list(phylo = A),
       prior = c(
         prior(student_t(3, 0, 10), class = "Intercept"),
         prior(normal(0, 1), class = "b"),
@@ -160,12 +164,31 @@ fit_pglmm <- function(simdata, delta = 0.95) {
       #sample_prior = "only",
       file = "pglmm"
     )
+
   } else {
+
+    pglmm <- brm(
+      #presabs ~ env + (1 + env | taxon),
+      presabs ~ env + (1 + env | taxon) + (1 + env | phylo),
+      data = df,
+      family = bernoulli(),
+      #cov_ranef = list(taxon = A),
+      cov_ranef = list(phylo = A),
+      prior = c(
+        prior(student_t(3, 0, 10), class = "Intercept"),
+        prior(normal(0, 1), class = "b"),
+        prior(student_t(3, 0, 5), class = "sd")),  # sd of group random effect
+      chains = 3, cores = 3, iter = 2000,
+      #control = list(adapt_delta = delta),
+      #sample_prior = "only",
+      file = "pglmm"
+    )
 
     # this seems to give error when changing number of taxa (unless recompiling)
     pglmm <- update(pglmm,
                     newdata = df,
-                    cov_ranef = list(taxon = A),
+                    #cov_ranef = list(taxon = A),
+                    cov_ranef = list(phylo = A),
                     #recompile = TRUE,
                     chains = 3, cores = 3, iter = 2000,
                     control = list(adapt_delta = delta))
@@ -175,9 +198,15 @@ fit_pglmm <- function(simdata, delta = 0.95) {
 
 
 
-  pglmm.params <- data.frame(coef(pglmm)$taxon[, , "Intercept"][, 1:2],
-                             coef(pglmm)$taxon[, , "env"][, 1:2])
-  names(pglmm.params) <- c("interc.pglmm", "interc.pglmm.se", "slope.pglmm", "slope.pglmm.se")
+  pglmm.params <- data.frame(fixef(pglmm)[1, 1] +
+                               ranef(pglmm)$taxon[, , "Intercept"][, 1] +
+                               ranef(pglmm)$phylo[, , "Intercept"][, 1],
+                             fixef(pglmm)[2, 1] +
+                               ranef(pglmm)$taxon[, , "env"][, 1] +
+                               ranef(pglmm)$phylo[, , "env"][, 1])
+
+  #names(pglmm.params) <- c("interc.pglmm", "interc.pglmm.se", "slope.pglmm", "slope.pglmm.se")
+  names(pglmm.params) <- c("interc.pglmm", "slope.pglmm")
 
   pglmm.params
 
