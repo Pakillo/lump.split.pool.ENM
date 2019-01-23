@@ -11,18 +11,20 @@
 #'
 
 
-simul_data <- function(nspp, nsite) {
+simul_data <- function(nspp = NULL, nsite = NULL, seed = NULL) {
 
 
   run.id <- gsub(":", "-", as.character(Sys.time()))
 
   ## random seed
-  if (is.null(.GlobalEnv$.Random.seed)) {
-    stop("Please set seed before.\n")
+  if (!is.null(seed)) {
+    .GlobalEnv$.Random.seed <- seed
   } else {
     seed <- .GlobalEnv$.Random.seed
-    dump("seed", file = paste0("seeds/", run.id, ".R"))
   }
+
+  dump("seed", file = paste0("seeds/", run.id, ".R"))
+
   # see http://www.cookbook-r.com/Numbers/Saving_the_state_of_the_random_number_generator/
 
 
