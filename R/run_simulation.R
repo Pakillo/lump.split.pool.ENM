@@ -1,12 +1,13 @@
 #' Run simulation
 #'
 #' @param delta 'adapt_delta' parameter for brm
+#' @param run.pglmm Logical. Run PGLMM? (default is TRUE).
 #' @inheritParams fit_split
 #'
 #' @return A data.frame
 #' @export
 #'
-run_simulation <- function(nspp, nsite, delta) {
+run_simulation <- function(nspp = NULL, nsite = NULL, delta = NULL, run.pglmm = TRUE) {
 
   simdata <- simul_data(nspp, nsite)
 
@@ -18,9 +19,15 @@ run_simulation <- function(nspp, nsite, delta) {
 
   bayesmix <- fit_bayesmix(simdata, delta)
 
-  pglmm <- fit_pglmm(simdata, delta)
+  results <- data.frame(simdata$simdf, split, lump, mixed, bayesmix)
 
-  results <- data.frame(simdata$simdf, split, lump, mixed, bayesmix, pglmm)
+  if (isTRUE(run.pglmm)) {
+
+    pglmm <- fit_pglmm(simdata, delta)
+
+    results <- data.frame(simdata$simdf, split, lump, mixed, bayesmix, pglmm)
+  }
+
 
   results
 
@@ -37,18 +44,17 @@ run_simulation <- function(nspp, nsite, delta) {
 #' @export
 #'
 
-run_sims <- function(nsim, nspp, nsite, delta) {
+run_sims <- function(nsim = 10, nspp = NULL, nsite = NULL, delta = NULL, run.pglmm = TRUE) {
 
   file.remove("pglmm.rds")  # delete file to force model compiling for first run
 
-  reps.list <- replicate(nsim, run_simulation(nspp, nsite, delta), simplify = FALSE)
+  reps.list <- replicate(nsim, run_simulation(nspp, nsite, delta, run.pglmm), simplify = FALSE)
 
   reps.df <- do.call("rbind", reps.list)
 
 }
 
 
-# gives error with brms:
 # run_sims_params <- function(nsim, nspp, nsite, delta) {
 #
 #   sims <- purrr::map2_dfr(as.list(nspp), as.list(nsite), run_sims_fixed, nsim, delta)
