@@ -14,11 +14,14 @@
 simul_data <- function(nspp, nsite) {
 
 
+  run.id <- gsub(":", "-", as.character(Sys.time()))
+
   ## random seed
   if (is.null(.GlobalEnv$.Random.seed)) {
     stop("Please set seed before.\n")
   } else {
     seed <- .GlobalEnv$.Random.seed
+    dump("seed", file = paste0("seeds/", run.id, ".R"))
   }
   # see http://www.cookbook-r.com/Numbers/Saving_the_state_of_the_random_number_generator/
 
@@ -62,19 +65,20 @@ simul_data <- function(nspp, nsite) {
   pres <- rbinom(length(suitab.error), size = 1, prob = suitab.error.invlogit)
 
 
-  data2model <- data.frame(taxon = as.character(paste("t", sort(rep(1:nspp, nsite)), sep = "")),
+  data2model <- data.frame(taxon = paste("t", sort(rep(1:nspp, nsite)), sep = ""),
                            site = rep(1:nsite, nspp),
                            env = rep(env, nspp),
                            suitab.invlogit = suitab.invlogit,
-                           presabs = pres)
+                           presabs = pres,
+                           stringsAsFactors = FALSE)
 
-  simdf <- data.frame(run.id = Sys.time(),
+  simdf <- data.frame(run.id = run.id,
                       nspp = nspp,
                       nsite = nsite,
-                      taxon = as.character(paste("t", 1:nspp, sep = "")),
+                      taxon = paste("t", 1:nspp, sep = ""),
                       interc = intercept,
-                      slope = slope
-                      )
+                      slope = slope,
+                      stringsAsFactors = FALSE)
 
   simdata <- list(data2model = data2model,
                   simdf = simdf,
