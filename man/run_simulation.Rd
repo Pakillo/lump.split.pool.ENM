@@ -4,7 +4,7 @@
 \alias{run_simulation}
 \title{Run simulation}
 \usage{
-run_simulation(nspp, nsite, delta = 0.95)
+run_simulation(nspp, nsite, delta)
 }
 \arguments{
 \item{delta}{'adapt_delta' parameter for brm}
