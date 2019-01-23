@@ -38,25 +38,37 @@ run_simulation <- function(nspp = NULL, nsite = NULL, delta = NULL, run.pglmm = 
 #' Run a number of simulations with fixed parameters
 #'
 #' @param nsim Number of replicate simulations to run
+#' @param force.run Logical. If FALSE (the default) simulations will NOT be run if there is a simulation output file available with same parameters (nspp, nsite). If TRUE, simulations will run and the file will be overwritten.
 #' @inheritParams run_simulation
 #'
 #' @return A data.frame with nrow = nspp*nsim
 #' @export
 #'
 
-run_sims <- function(nsim = 10, nspp = NULL, nsite = NULL, delta = NULL, run.pglmm = TRUE) {
+run_sims <- function(nsim = 10, nspp = NULL, nsite = NULL, delta = NULL,
+                     run.pglmm = TRUE, force.run = FALSE) {
 
-  file.remove("pglmm.rds")  # delete file to force model compiling for first run
+  if (!file.exists(paste0("simulations/", "nsp", nspp, "_nsite", nsite,".rds")) | isTRUE(force.run)) {
 
-  reps.list <- replicate(nsim, run_simulation(nspp, nsite, delta, run.pglmm), simplify = FALSE)
+    file.remove("pglmm.rds")  # delete file to force model compiling for first run
 
-  reps.df <- do.call("rbind", reps.list)
+    reps.list <- replicate(nsim, run_simulation(nspp, nsite, delta, run.pglmm), simplify = FALSE)
+
+    reps.df <- do.call("rbind", reps.list)
+
+    saveRDS(reps.df, paste0("simulations/", "nsp", nspp, "_nsite", nsite,".rds"))
+
+    reps.df
+
+  }
 
 }
 
 
-# run_sims_params <- function(nsim, nspp, nsite, delta) {
+# run_sims_params <- function(nsim = 10, nspp = NULL, nsite = NULL, delta = NULL,
+#                             run.pglmm = TRUE, force.run = FALSE) {
 #
-#   sims <- purrr::map2_dfr(as.list(nspp), as.list(nsite), run_sims_fixed, nsim, delta)
+#   sims <- purrr::map2_dfr(as.list(nspp), as.list(nsite), run_sims, nsim, delta,
+#                           run.pglmm, force.run)
 #
 # }
