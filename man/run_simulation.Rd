@@ -4,10 +4,13 @@
 \alias{run_simulation}
 \title{Run simulation}
 \usage{
-run_simulation(nspp, nsite, delta)
+run_simulation(nspp = NULL, nsite = NULL, delta = NULL,
+  run.pglmm = TRUE)
 }
 \arguments{
 \item{delta}{'adapt_delta' parameter for brm}
+
+\item{run.pglmm}{Logical. Run PGLMM? (default is TRUE).}
 }
 \value{
 A data.frame

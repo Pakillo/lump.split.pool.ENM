@@ -4,12 +4,15 @@
 \alias{run_sims}
 \title{Run a number of simulations with fixed parameters}
 \usage{
-run_sims(nsim, nspp, nsite, delta)
+run_sims(nsim = 10, nspp = NULL, nsite = NULL, delta = NULL,
+  run.pglmm = TRUE)
 }
 \arguments{
 \item{nsim}{Number of replicate simulations to run}
 
 \item{delta}{'adapt_delta' parameter for brm}
+
+\item{run.pglmm}{Logical. Run PGLMM? (default is TRUE).}
 }
 \value{
 A data.frame with nrow = nspp*nsim

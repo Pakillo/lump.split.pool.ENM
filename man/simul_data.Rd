@@ -4,7 +4,7 @@
 \alias{simul_data}
 \title{Simulate dataset}
 \usage{
-simul_data(nspp, nsite)
+simul_data(nspp = NULL, nsite = NULL, seed = NULL)
 }
 \arguments{
 \item{nspp}{Number of taxa}
