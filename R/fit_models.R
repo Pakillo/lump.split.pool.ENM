@@ -16,9 +16,9 @@ fit_split <- function(simdata) {
     group_by(taxon) %>%
     do(split.m = glm(presabs ~ env, data = ., family = binomial)) %>%
     summarise(interc.split = coef(split.m)[1],
-              interc.split.se = se.coef(split.m)[1],
+              interc.split.se = arm::se.coef(split.m)[1],
               slope.split = coef(split.m)[2],
-              slope.split.se = se.coef(split.m)[2])
+              slope.split.se = arm::se.coef(split.m)[2])
 
   split.model
 
@@ -109,8 +109,9 @@ fit_bayesmix <- function(simdata, delta = 0.95) {
   )
 
   bayesmix <- update(bayesmix,
-                       newdata = df,
-                       control = list(adapt_delta = delta))
+                     newdata = df,
+                     chains = 3, cores = 3, iter = 2000,
+                     control = list(adapt_delta = delta))
 
   #summary(bayesmix)
 
@@ -144,24 +145,34 @@ fit_pglmm <- function(simdata, delta = 0.95) {
   df <- simdata$data2model
 
 
-  pglmm <- brm(
-    presabs ~ env + (1 + env | taxon),
-    data = df,
-    family = bernoulli(),
-    cov_ranef = list(taxon = A),
-    prior = c(
-      prior(student_t(3, 0, 10), class = "Intercept"),
-      prior(normal(0, 1), class = "b"),
-      prior(student_t(3, 0, 5), class = "sd")),  # sd of group random effect
-    chains = 3, cores = 3, iter = 2000,
-    #control = list(adapt_delta = delta),
-    #sample_prior = "only",
-    file = "pglmm"
-  )
+  if (!file.exists("pglmm.rds")) {
+    pglmm <- brm(
+      presabs ~ env + (1 + env | taxon),
+      data = df,
+      family = bernoulli(),
+      cov_ranef = list(taxon = A),
+      prior = c(
+        prior(student_t(3, 0, 10), class = "Intercept"),
+        prior(normal(0, 1), class = "b"),
+        prior(student_t(3, 0, 5), class = "sd")),  # sd of group random effect
+      chains = 3, cores = 3, iter = 2000,
+      #control = list(adapt_delta = delta),
+      #sample_prior = "only",
+      file = "pglmm"
+    )
+  } else {
 
-  pglmm <- update(pglmm,
-                  newdata = df,
-                  control = list(adapt_delta = delta))
+    # this seems to give error when changing number of taxa (unless recompiling)
+    pglmm <- update(pglmm,
+                    newdata = df,
+                    cov_ranef = list(taxon = A),
+                    #recompile = TRUE,
+                    chains = 3, cores = 3, iter = 2000,
+                    control = list(adapt_delta = delta))
+
+  }
+
+
 
 
   pglmm.params <- data.frame(coef(pglmm)$taxon[, , "Intercept"][, 1:2],
