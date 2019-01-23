@@ -47,7 +47,7 @@ simul_data <- function(nspp = NULL, nsite = NULL, seed = NULL) {
 
 
   ## Set up species-specific regression coefficients as random effects
-  intercept <- iD %*% runif(nspp, -1, 2)
+  intercept <- iD %*% runif(nspp, -2, 2)
   slope <- iD %*% runif(nspp, -0.4, 0.1)
 
   intercept <- intercept[gtools::mixedorder(rownames(intercept)), ]
