@@ -8,6 +8,10 @@ run_simulation(nspp = NULL, nsite = NULL, delta = NULL,
   run.pglmm = TRUE)
 }
 \arguments{
+\item{nspp}{Number of taxa to simulate.}
+
+\item{nsite}{Number of sites (equal for all taxa)}
+
 \item{delta}{'adapt_delta' parameter for brm}
 
 \item{run.pglmm}{Logical. Run PGLMM? (default is TRUE).}

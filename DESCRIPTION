@@ -1,12 +1,15 @@
 Package: lump.split.pool.ENM
 Title: Comparing different ENM approaches
-Version: 0.0.0.9000
+Version: 0.1.0
 Authors@R: 
     person(given = "Francisco",
            family = "Rodriguez-Sanchez",
            role = c("aut", "cre"),
            email = "f.rodriguez.sanc@gmail.com")
-Description: What the package does (one paragraph).
+Description: Facilitate running simulations to compare different approaches 
+    for ecological niche modelling, namely splitting, lumping, and fit models
+    with partial pooling. See https://doi.org/10.1016/j.tree.2018.10.012 
+    for more information.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
@@ -22,5 +25,6 @@ Imports:
     broom,
     lme4,
     brms,
-    MCMCglmm
+    MCMCglmm,
+    tidyr
 RoxygenNote: 6.1.1

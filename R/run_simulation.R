@@ -1,8 +1,10 @@
 #' Run simulation
 #'
+#' @param nspp Number of taxa to simulate.
+#' @param nsite Number of sites (equal for all taxa)
 #' @param delta 'adapt_delta' parameter for brm
 #' @param run.pglmm Logical. Run PGLMM? (default is TRUE).
-#' @inheritParams fit_split
+#'
 #'
 #' @return A data.frame
 #' @export

@@ -12,7 +12,7 @@ fit_pglmm(simdata, delta = 0.95)
 \item{delta}{adapt_delta parameter for brm}
 }
 \value{
-A data frame with 4 columns (intercept estimate and standard error, and slope estimate and standard error), and as many rows as taxa.
+A data frame with 2 columns (intercept and slope estimate), and as many rows as taxa.
 }
 \description{
 Fit Bayesian phylogenetic mixed model (brms)

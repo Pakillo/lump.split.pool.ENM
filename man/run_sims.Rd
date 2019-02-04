@@ -5,14 +5,20 @@
 \title{Run a number of simulations with fixed parameters}
 \usage{
 run_sims(nsim = 10, nspp = NULL, nsite = NULL, delta = NULL,
-  run.pglmm = TRUE)
+  run.pglmm = TRUE, force.run = FALSE)
 }
 \arguments{
 \item{nsim}{Number of replicate simulations to run}
 
+\item{nspp}{Number of taxa to simulate.}
+
+\item{nsite}{Number of sites (equal for all taxa)}
+
 \item{delta}{'adapt_delta' parameter for brm}
 
 \item{run.pglmm}{Logical. Run PGLMM? (default is TRUE).}
+
+\item{force.run}{Logical. If FALSE (the default) simulations will NOT be run if there is a simulation output file available with same parameters (nspp, nsite). If TRUE, simulations will run and the file will be overwritten.}
 }
 \value{
 A data.frame with nrow = nspp*nsim

@@ -15,7 +15,7 @@ calculate_bias <- function(simdf) {
            interc.lump.bias = interc.lump - interc,
            interc.mixed.bias = interc.mixed - interc,
            interc.bayesmix.bias = interc.bayesmix - interc,
-           interc.pglmm.bias = ifelse("interc.pglmm" %in% names(simdf.redux), interc.pglmm - interc, NA)) %>%
+           interc.pglmm.bias = ifelse(!is.na(interc.pglmm), interc.pglmm - interc, NA)) %>%
     tidyr::gather("parameter", "sim.value", interc) %>%
     tidyr::gather("method", "bias", contains(".bias")) %>%
     mutate(method = gsub("interc.", "", .$method)) %>%
@@ -29,7 +29,7 @@ calculate_bias <- function(simdf) {
            slope.lump.bias = slope.lump - slope,
            slope.mixed.bias = slope.mixed - slope,
            slope.bayesmix.bias = slope.bayesmix - slope,
-           slope.pglmm.bias = ifelse("slope.pglmm" %in% names(simdf.redux), slope.pglmm - slope, NA)) %>%
+           slope.pglmm.bias = ifelse(!is.na(slope.pglmm), slope.pglmm - slope, NA)) %>%
     tidyr::gather("parameter", "sim.value", slope) %>%
     tidyr::gather("method", "bias", contains(".bias")) %>%
     mutate(method = gsub("slope.", "", .$method)) %>%
