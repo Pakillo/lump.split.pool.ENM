@@ -50,7 +50,7 @@ run_simulation <- function(nspp = NULL, nsite = NULL, delta = NULL, run.pglmm = 
 run_sims <- function(nsim = 10, nspp = NULL, nsite = NULL, delta = NULL,
                      run.pglmm = TRUE, force.run = FALSE) {
 
-  if (!file.exists(paste0("simulations/", "nsp", nspp, "_nsite", nsite,".rds")) | isTRUE(force.run)) {
+  if (!file.exists(paste0("simulations_v2/", "nsp", nspp, "_nsite", nsite,".rds")) | isTRUE(force.run)) {
 
     file.remove("pglmm.rds")  # delete file to force model compiling for first run
 
@@ -58,7 +58,7 @@ run_sims <- function(nsim = 10, nspp = NULL, nsite = NULL, delta = NULL,
 
     reps.df <- do.call("rbind", reps.list)
 
-    saveRDS(reps.df, paste0("simulations/", "nsp", nspp, "_nsite", nsite,".rds"))
+    saveRDS(reps.df, paste0("simulations_v2/", "nsp", nspp, "_nsite", nsite,".rds"))
 
     reps.df
 
