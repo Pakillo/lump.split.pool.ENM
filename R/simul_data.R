@@ -23,7 +23,7 @@ simul_data <- function(nspp = NULL, nsite = NULL, seed = NULL) {
     seed <- .GlobalEnv$.Random.seed
   }
 
-  dump("seed", file = paste0("seeds/", run.id, ".R"))
+  dump("seed", file = paste0("analysis/seeds_v2/", run.id, ".R"))
 
   # see http://www.cookbook-r.com/Numbers/Saving_the_state_of_the_random_number_generator/
 

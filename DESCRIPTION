@@ -1,6 +1,6 @@
 Package: lump.split.pool.ENM
 Title: Comparing different ENM approaches
-Version: 0.2.0
+Version: 0.2.1
 Authors@R: 
     person(given = "Francisco",
            family = "Rodriguez-Sanchez",

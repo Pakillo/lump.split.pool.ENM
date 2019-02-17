@@ -52,7 +52,7 @@ run_sims <- function(nsim = 10, nspp = NULL, nsite = NULL, delta = NULL,
 
   if (!file.exists(paste0("simulations_v2/", "nsp", nspp, "_nsite", nsite,".rds")) | isTRUE(force.run)) {
 
-    file.remove("pglmm.rds")  # delete file to force model compiling for first run
+    if (file.exists("pglmm.rds")) file.remove("pglmm.rds")  # delete file to force model compiling for first run
 
     reps.list <- replicate(nsim, run_simulation(nspp, nsite, delta, run.pglmm), simplify = FALSE)
 
