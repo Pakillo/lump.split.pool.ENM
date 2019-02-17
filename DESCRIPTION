@@ -1,6 +1,6 @@
 Package: lump.split.pool.ENM
 Title: Comparing different ENM approaches
-Version: 0.1.0
+Version: 0.2.0
 Authors@R: 
     person(given = "Francisco",
            family = "Rodriguez-Sanchez",
@@ -26,5 +26,6 @@ Imports:
     lme4,
     brms,
     MCMCglmm,
-    tidyr
+    tidyr,
+    phytools
 RoxygenNote: 6.1.1
