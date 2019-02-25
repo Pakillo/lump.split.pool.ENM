@@ -5,13 +5,14 @@
 #' @param nspp Number of taxa
 #' @param nsite Number of sites
 #' @param seed Random seed
+#' @param min.K Numeric Force minimum phylogenetic signal (Blomberg's K) for simulated intercepts and slopes?
 #'
 #' @return A dataframe
 #' @export
 #'
 
 
-simul_data <- function(nspp = NULL, nsite = NULL, seed = NULL) {
+simul_data <- function(nspp = NULL, nsite = NULL, seed = NULL, min.K = NULL) {
 
 
   run.id <- gsub(":", "-", as.character(Sys.time()))
@@ -56,22 +57,41 @@ simul_data <- function(nspp = NULL, nsite = NULL, seed = NULL) {
 
 
 
+
   ## Using different approach to simulate continuous trait along phylogeny:
 
-  phy <- ape::rcoal(n = nspp)  # simulate tree
-  #plot(phy)
+  ## simulate tree
+#  phy <- ape::rcoal(n = nspp)
+  phy <- ape::compute.brlen(ape::rtree(n = nspp), method = "Grafen", power = 1)
+#  plot(phy)
 
   # simulate intercept values following Brownian Motion
   sim.interc <- ape::rTraitCont(phy, model = "BM", sigma = 1, root.value = runif(1, -1, 1))
   K.interc <- phytools::phylosig(phy, sim.interc)  # phylogenetic signal (Blomberg's K)
-  #sim.interc
+  #K.interc
+
+  # force high phylogenetic signal
+  if (!is.null(min.K) & is.numeric(min.K)) {
+    while (K.interc < min.K) {
+      sim.interc <- ape::rTraitCont(phy, model = "BM", sigma = 1, root.value = runif(1, -1, 1))
+      K.interc <- phytools::phylosig(phy, sim.interc)  # phylogenetic signal (Blomberg's K)
+    }
+  }
 
   # simulate slope values following Brownian Motion
   # (note here intercept and slopes are uncorrelated:
   # check out ape:rTraitMult or mvMORPH::mvSIM for simulating traits correlated evolution)
   sim.slope <- ape::rTraitCont(phy, model = "BM", sigma = 0.2, root.value = runif(1, -0.20, -0.10))
   K.slope <- phytools::phylosig(phy, sim.slope)
-  #sim.slope
+
+  # force high phylogenetic signal
+  if (!is.null(min.K) & is.numeric(min.K)) {
+    while (K.slope < min.K) {
+      sim.slope <- ape::rTraitCont(phy, model = "BM", sigma = 0.2, root.value = runif(1, -0.20, -0.10))
+      K.slope <- phytools::phylosig(phy, sim.slope)
+    }
+  }
+
 
 
   intercept <- sim.interc[gtools::mixedorder(names(sim.interc))]

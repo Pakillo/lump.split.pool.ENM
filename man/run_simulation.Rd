@@ -4,13 +4,15 @@
 \alias{run_simulation}
 \title{Run simulation}
 \usage{
-run_simulation(nspp = NULL, nsite = NULL, delta = NULL,
-  run.pglmm = TRUE)
+run_simulation(nspp = NULL, nsite = NULL, min.K = NULL,
+  delta = NULL, run.pglmm = TRUE)
 }
 \arguments{
 \item{nspp}{Number of taxa to simulate.}
 
 \item{nsite}{Number of sites (equal for all taxa)}
+
+\item{min.K}{Numeric Force minimum phylogenetic signal (Blomberg's K) for simulated intercepts and slopes?}
 
 \item{delta}{'adapt_delta' parameter for brm}
 

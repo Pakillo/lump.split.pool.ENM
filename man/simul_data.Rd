@@ -4,7 +4,7 @@
 \alias{simul_data}
 \title{Simulate dataset}
 \usage{
-simul_data(nspp = NULL, nsite = NULL, seed = NULL)
+simul_data(nspp = NULL, nsite = NULL, seed = NULL, min.K = NULL)
 }
 \arguments{
 \item{nspp}{Number of taxa}
@@ -12,6 +12,8 @@ simul_data(nspp = NULL, nsite = NULL, seed = NULL)
 \item{nsite}{Number of sites}
 
 \item{seed}{Random seed}
+
+\item{min.K}{Numeric Force minimum phylogenetic signal (Blomberg's K) for simulated intercepts and slopes?}
 }
 \value{
 A dataframe

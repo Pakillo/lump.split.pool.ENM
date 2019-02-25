@@ -4,8 +4,9 @@
 \alias{run_sims}
 \title{Run a number of simulations with fixed parameters}
 \usage{
-run_sims(nsim = 10, nspp = NULL, nsite = NULL, delta = NULL,
-  run.pglmm = TRUE, force.run = FALSE)
+run_sims(nsim = 10, nspp = NULL, nsite = NULL, min.K = NULL,
+  delta = NULL, run.pglmm = TRUE, force.run = FALSE,
+  out.dir = getwd())
 }
 \arguments{
 \item{nsim}{Number of replicate simulations to run}
@@ -14,11 +15,15 @@ run_sims(nsim = 10, nspp = NULL, nsite = NULL, delta = NULL,
 
 \item{nsite}{Number of sites (equal for all taxa)}
 
+\item{min.K}{Numeric Force minimum phylogenetic signal (Blomberg's K) for simulated intercepts and slopes?}
+
 \item{delta}{'adapt_delta' parameter for brm}
 
 \item{run.pglmm}{Logical. Run PGLMM? (default is TRUE).}
 
 \item{force.run}{Logical. If FALSE (the default) simulations will NOT be run if there is a simulation output file available with same parameters (nspp, nsite). If TRUE, simulations will run and the file will be overwritten.}
+
+\item{out.dir}{Path to folder where to simulations will be saved (in RDS format).}
 }
 \value{
 A data.frame with nrow = nspp*nsim

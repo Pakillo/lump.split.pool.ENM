@@ -2,6 +2,7 @@
 #'
 #' @param nspp Number of taxa to simulate.
 #' @param nsite Number of sites (equal for all taxa)
+#' @param min.K Numeric Force minimum phylogenetic signal (Blomberg's K) for simulated intercepts and slopes?
 #' @param delta 'adapt_delta' parameter for brm
 #' @param run.pglmm Logical. Run PGLMM? (default is TRUE).
 #'
@@ -9,9 +10,9 @@
 #' @return A data.frame
 #' @export
 #'
-run_simulation <- function(nspp = NULL, nsite = NULL, delta = NULL, run.pglmm = TRUE) {
+run_simulation <- function(nspp = NULL, nsite = NULL, min.K = NULL, delta = NULL, run.pglmm = TRUE) {
 
-  simdata <- simul_data(nspp, nsite)
+  simdata <- simul_data(nspp, nsite, min.K = min.K)
 
   split <- fit_split(simdata)
 
@@ -41,24 +42,26 @@ run_simulation <- function(nspp = NULL, nsite = NULL, delta = NULL, run.pglmm = 
 #'
 #' @param nsim Number of replicate simulations to run
 #' @param force.run Logical. If FALSE (the default) simulations will NOT be run if there is a simulation output file available with same parameters (nspp, nsite). If TRUE, simulations will run and the file will be overwritten.
+#' @param out.dir Path to folder where to simulations will be saved (in RDS format).
 #' @inheritParams run_simulation
 #'
 #' @return A data.frame with nrow = nspp*nsim
 #' @export
 #'
 
-run_sims <- function(nsim = 10, nspp = NULL, nsite = NULL, delta = NULL,
-                     run.pglmm = TRUE, force.run = FALSE) {
+run_sims <- function(nsim = 10, nspp = NULL, nsite = NULL, min.K = NULL,
+                     delta = NULL, run.pglmm = TRUE, force.run = FALSE,
+                     out.dir = getwd()) {
 
-  if (!file.exists(paste0("simulations_v2/", "nsp", nspp, "_nsite", nsite,".rds")) | isTRUE(force.run)) {
+  if (!file.exists(paste0(out.dir, "/nsp", nspp, "_nsite", nsite,".rds")) | isTRUE(force.run)) {
 
     if (file.exists("pglmm.rds")) file.remove("pglmm.rds")  # delete file to force model compiling for first run
 
-    reps.list <- replicate(nsim, run_simulation(nspp, nsite, delta, run.pglmm), simplify = FALSE)
+    reps.list <- replicate(nsim, run_simulation(nspp, nsite, min.K, delta, run.pglmm), simplify = FALSE)
 
     reps.df <- do.call("rbind", reps.list)
 
-    saveRDS(reps.df, paste0("simulations_v2/", "nsp", nspp, "_nsite", nsite,".rds"))
+    saveRDS(reps.df, paste0(out.dir, "/nsp", nspp, "_nsite", nsite,".rds"))
 
     reps.df
 
